@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0077ff">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<title>Wave — музыка</title>
+<style>
+:root{--blue:#0077ff;--blue2:#0066e8;--bg:#f2f5f9;--card:#fff;--text:#182230;--muted:#818c99}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);padding-bottom:105px}
+header{background:linear-gradient(135deg,#0787ff,#0062d8);color:white;padding:18px 18px 22px;border-radius:0 0 24px 24px;box-shadow:0 8px 24px #0077ff2b}
+.top{display:flex;align-items:center;justify-content:space-between}.brand{font-size:25px;font-weight:800;letter-spacing:-.7px}.brand span{opacity:.72}.avatar{width:38px;height:38px;border-radius:50%;background:#ffffff30;display:grid;place-items:center;font-size:19px}
+.search{margin-top:18px;background:#ffffff25;border:1px solid #ffffff35;border-radius:14px;padding:12px 14px;color:#fff;display:flex;gap:9px;align-items:center}.search input{width:100%;border:0;outline:0;background:transparent;color:white;font-size:15px}.search input::placeholder{color:#e0efff}
+main{padding:18px 15px;max-width:620px;margin:auto}.section-head{display:flex;align-items:center;justify-content:space-between;margin:6px 2px 12px}.section-head h2{font-size:20px;margin:0;letter-spacing:-.4px}.hint{color:var(--muted);font-size:12px}
+.hero{background:linear-gradient(135deg,#1d9bff,#4d57ff);color:#fff;border-radius:20px;padding:18px;display:flex;gap:14px;align-items:center;box-shadow:0 8px 20px #287aff24;margin-bottom:23px}
+.disc{width:74px;height:74px;flex-shrink:0;border-radius:20px;background:linear-gradient(145deg,#b7e4ff,#5b8dff);display:grid;place-items:center;font-size:35px;box-shadow:inset 0 0 0 1px #ffffff60}
+.hero h3{margin:0 0 5px;font-size:18px}.hero p{margin:0;color:#e8f4ff;font-size:13px;line-height:1.4}.hero button{margin-top:10px;background:white;color:#0069e8;border:0;border-radius:11px;padding:9px 13px;font-weight:700}
+.actions{display:flex;gap:9px;margin-bottom:22px}.action{flex:1;border:0;border-radius:14px;padding:13px 7px;background:white;color:var(--text);font-weight:650;box-shadow:0 2px 8px #18223008}.action .ico{display:block;font-size:20px;margin-bottom:5px}
+.track-list{background:white;border-radius:17px;overflow:hidden}.track{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid #f0f2f5;min-width:0}.track:last-child{border-bottom:0}.cover{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#c3eaff,#7b9eff);font-size:22px;flex-shrink:0}.meta{flex:1;min-width:0}.title{font-weight:650;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.artist{font-size:12px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.play-small{border:0;background:#eef5ff;color:var(--blue);width:38px;height:38px;border-radius:50%;font-size:17px;flex-shrink:0}
+.empty{text-align:center;padding:25px 18px;color:var(--muted);font-size:14px;line-height:1.5}.empty strong{display:block;color:#4c5968;font-size:15px;margin-bottom:6px}
+.notice{font-size:12px;color:#738093;line-height:1.5;padding:13px 3px}
+.online-box{background:#fff;border-radius:17px;padding:14px;margin:0 0 22px}.online-search{display:flex;gap:8px;margin:10px 0}.online-search input{min-width:0;flex:1;border:1px solid #dce4ef;border-radius:12px;padding:12px;font-size:14px;outline-color:var(--blue)}.online-search button{border:0;border-radius:12px;padding:0 14px;background:var(--blue);color:white;font-weight:700}.online-result{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f2f5}.online-result:last-child{border-bottom:0}.online-result .meta{min-width:0}.online-result .play-small{flex-shrink:0}.online-status{font-size:12px;color:var(--muted);line-height:1.4}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(18px);border-top:1px solid #e6eaf0;display:flex;justify-content:space-around;padding:10px 8px calc(10px + env(safe-area-inset-bottom));z-index:4}.nav div{text-align:center;color:#7d8997;font-size:10px;min-width:58px}.nav b{display:block;font-size:20px;margin-bottom:3px}.nav .active{color:var(--blue);font-weight:700}
+.player{position:fixed;bottom:66px;left:10px;right:10px;max-width:600px;margin:auto;background:#172b46;color:white;border-radius:16px;padding:10px 12px;display:none;align-items:center;gap:10px;z-index:5;box-shadow:0 8px 25px #001a3c40}.player.show{display:flex}.player .mini-cover{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#5ac8fa,#4b65ff);display:grid;place-items:center;font-size:21px}.player .meta{color:white}.player .artist{color:#b8c7da}.controls{display:flex;align-items:center;gap:8px}.controls button{border:0;background:transparent;color:white;font-size:20px;padding:5px}.progress-wrap{height:3px;background:#ffffff35;position:absolute;bottom:0;left:12px;right:12px;border-radius:4px;overflow:hidden}.progress{height:100%;width:0;background:#65c4ff}
+#fileInput{display:none}.small-link{color:var(--blue);font-size:13px;font-weight:650;border:0;background:transparent;padding:6px}
+@media(min-width:600px){main{padding-top:24px}.player{bottom:72px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><div class="brand">wave<span>♫</span></div><div class="avatar">🎧</div></div>
+  <div class="search">⌕ <input id="search" placeholder="Поиск по твоим трекам…" aria-label="Поиск по трекам"></div>
+</header>
+<main>
+  <div class="section-head"><h2>Привет, меломан 👋</h2><span class="hint">Твоя музыка</span></div>
+  <section class="hero">
+    <div class="disc">♫</div>
+    <div><h3>Музыка всегда с тобой</h3><p>Добавь аудиофайлы с iPhone и слушай свою коллекцию.</p><button id="heroAdd">＋ Добавить музыку</button></div>
+  </section>
+  <div class="actions">
+    <button class="action" id="addBtn"><span class="ico">＋</span>Мои файлы</button>
+    <button class="action" id="shuffleBtn"><span class="ico">🔀</span>Перемешать</button>
+    <button class="action" id="playAllBtn"><span class="ico">▶</span>Всё играть</button>
+  </div>
+  <section class="online-box">
+    <div class="section-head"><h2>🌐 Музыка из интернета</h2></div>
+    <p class="online-status">Ищи аудиозаписи из Internet Archive — открытые и архивные материалы, доступные для потокового прослушивания.</p>
+    <form class="online-search" id="onlineForm"><input id="onlineQuery" placeholder="Например, jazz, piano, rock…" aria-label="Поиск музыки в интернете"><button type="submit">Найти</button></form>
+    <div id="onlineResults" class="online-status">Введи исполнителя, название или жанр и нажми «Найти».</div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eef1f5">
+      <div class="online-status">Или добавь прямую ссылку на аудиофайл (MP3, M4A, OGG):</div>
+      <form class="online-search" id="urlForm"><input id="audioUrl" type="url" placeholder="https://example.com/song.mp3" aria-label="Ссылка на аудиофайл"><button type="submit">Добавить</button></form>
+    </div>
+  </section>
+  <div class="section-head"><h2>Мои треки</h2><button class="small-link" id="addText">＋ Добавить</button></div>
+  <div class="track-list" id="trackList"><div class="empty"><strong>Здесь пока тихо</strong>Нажми «Добавить музыку» и выбери аудиофайлы в приложении «Файлы» на iPhone.</div></div>
+  <div class="notice">Интернет-поиск использует Internet Archive. Доступность отдельных записей и право на их использование определяются условиями страницы источника. Плеер не подключается к VK. Для прямых ссылок используй аудиофайлы, которые доступны тебе на законных основаниях.</div>
+  <input id="fileInput" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.flac" multiple>
+</main>
+<div class="player" id="player">
+  <div class="mini-cover">♫</div><div class="meta"><div class="title" id="nowTitle">Нет трека</div><div class="artist" id="nowArtist">Выбери музыку</div></div>
+  <div class="controls"><button id="prev" aria-label="Предыдущий">⏮</button><button id="toggle" aria-label="Играть или пауза">▶</button><button id="next" aria-label="Следующий">⏭</button></div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+</div>
+<nav class="nav"><div class="active"><b>♫</b>Музыка</div><div id="navLibrary"><b>▤</b>Коллекция</div><div id="navAdd"><b>＋</b>Добавить</div><div><b>☺</b>Профиль</div></nav>
+<audio id="audio" preload="metadata"></audio>
+<script>
+(() => {
+ const $=id=>document.getElementById(id), audio=$('audio'), input=$('fileInput');
+ let tracks=[], current=-1, shuffle=false, onlineBusy=false;
+ function addFiles(files){
+   [...files].filter(f=>f.type.startsWith('audio/')||/\.(mp3|m4a|aac|wav|ogg|flac)$/i.test(f.name)).forEach(file=>{
+     tracks.push({name:file.name.replace(/\.[^.]+$/,''),artist:'Мой файл',url:URL.createObjectURL(file)});
+   });
+   render();
+   if(tracks.length && current<0) loadTrack(0,false);
+ }
+ function render(){
+   const query=$('search').value.trim().toLowerCase();
+   const list=$('trackList'); list.innerHTML='';
+   const visible=tracks.map((t,i)=>({...t,i})).filter(t=>(t.name+' '+t.artist).toLowerCase().includes(query));
+   if(!visible.length){list.innerHTML='<div class="empty"><strong>'+(tracks.length?'Ничего не найдено':'Здесь пока тихо')+'</strong>'+(tracks.length?'Попробуй другой запрос.':'Нажми «Добавить музыку» и выбери аудиофайлы в приложении «Файлы» на iPhone.')+'</div>';return}
+   visible.forEach(t=>{
+     const row=document.createElement('div'); row.className='track';
+     const cover=document.createElement('div');cover.className='cover';cover.textContent='♫';
+     const meta=document.createElement('div');meta.className='meta';
+     const title=document.createElement('div');title.className='title';title.textContent=t.name;
+     const artist=document.createElement('div');artist.className='artist';artist.textContent=t.artist;
+     meta.append(title,artist);
+     const btn=document.createElement('button');btn.className='play-small';btn.textContent=(current===t.i&&!audio.paused)?'Ⅱ':'▶';btn.setAttribute('aria-label','Воспроизвести '+t.name);
+     btn.onclick=()=>{if(current===t.i){audio.paused?audio.play():audio.pause();syncPlayer()}else loadTrack(t.i,true)};
+     row.append(cover,meta,btn);list.append(row);
+   });
+ }
+ async function searchInternet(e){
+   e.preventDefault();
+   const q=$('onlineQuery').value.trim(), box=$('onlineResults');
+   if(!q)return;
+   box.textContent='Ищу аудиозаписи в Internet Archive…';
+   try{
+     const endpoint='https://archive.org/advancedsearch.php?q='+encodeURIComponent('mediatype:audio AND ('+q+')')+'&fl[]='+encodeURIComponent('identifier')+'&fl[]='+encodeURIComponent('title')+'&fl[]='+encodeURIComponent('creator')+'&rows=12&page=1&output=json';
+     const response=await fetch(endpoint);
+     if(!response.ok)throw new Error('search failed');
+     const data=await response.json();
+     const docs=data.response&&data.response.docs||[];
+     box.innerHTML='';
+     if(!docs.length){box.textContent='Ничего не найдено. Попробуй другой запрос.';return;}
+     docs.forEach(item=>{
+       const row=document.createElement('div');row.className='online-result';
+       const cover=document.createElement('div');cover.className='cover';cover.textContent='🌐';
+       const meta=document.createElement('div');meta.className='meta';
+       const title=document.createElement('div');title.className='title';title.textContent=Array.isArray(item.title)?item.title[0]:item.title||item.identifier;
+       const artist=document.createElement('div');artist.className='artist';artist.textContent=(Array.isArray(item.creator)?item.creator.join(', '):item.creator)||'Internet Archive';
+       meta.append(title,artist);
+       const btn=document.createElement('button');btn.className='play-small';btn.textContent='▶';btn.setAttribute('aria-label','Прослушать '+title.textContent);
+       btn.onclick=()=>playArchiveItem(item,btn,title.textContent,artist.textContent);
+       row.append(cover,meta,btn);box.append(row);
+     });
+     const note=document.createElement('div');note.className='online-status';note.style.marginTop='8px';note.textContent='Источник: Internet Archive. Некоторые записи могут быть недоступны для воспроизведения.';box.append(note);
+   }catch(err){box.textContent='Не удалось выполнить поиск. Проверь подключение к интернету или попробуй позже. Можно добавить прямую ссылку на аудиофайл ниже.';}
+ }
+ async function playArchiveItem(item,button,title,artist){
+   button.textContent='…';
+   try{
+     const r=await fetch('https://archive.org/metadata/'+encodeURIComponent(item.identifier));
+     if(!r.ok)throw new Error('metadata unavailable');
+     const meta=await r.json();
+     const files=(meta.files||[]).filter(f=>/\.(mp3|m4a|ogg|oga|wav|flac|aac)$/i.test(f.name||'') && !f.name.includes('__ia_thumb'));
+     if(!files.length)throw new Error('no audio');
+     files.sort((a,b)=>((a.source==='original'?0:1)-(b.source==='original'?0:1)) || ((Number(a.size)||0)-(Number(b.size)||0)));
+     const file=files[0];
+     const url='https://archive.org/download/'+encodeURIComponent(item.identifier)+'/'+file.name.split('/').map(encodeURIComponent).join('/');
+     tracks.push({name:title,artist:artist||'Internet Archive',url,remote:true});
+     loadTrack(tracks.length-1,true);
+   }catch(err){button.textContent='↗';const old=button.title;button.title='Не удалось открыть запись: попробуй другую';alert('Эту запись не удалось воспроизвести. Попробуй другую запись или открой страницу источника: https://archive.org/details/'+item.identifier);}
+ }
+ function addAudioUrl(e){
+   e.preventDefault();const field=$('audioUrl'),url=field.value.trim();
+   if(!url)return;
+   try{const parsed=new URL(url);if(!['http:','https:'].includes(parsed.protocol))throw new Error();
+     const name=decodeURIComponent(parsed.pathname.split('/').pop()||'Интернет-аудио').replace(/\.(mp3|m4a|aac|wav|ogg|flac)$/i,'')||'Интернет-аудио';
+     tracks.push({name,artist:'Интернет-ссылка',url,remote:true});render();loadTrack(tracks.length-1,true);field.value='';
+   }catch(err){alert('Введи корректную ссылку, начинающуюся с https:// или http://');}
+ }
+ function loadTrack(i,play=true){
+   if(!tracks.length)return;
+   current=(i+tracks.length)%tracks.length;
+   audio.src=tracks[current].url;
+   $('player').classList.add('show');
+   $('nowTitle').textContent=tracks[current].name;
+   $('nowArtist').textContent=tracks[current].artist;
+   if(play) audio.play().catch(()=>{});
+   syncPlayer();render();
+ }
+ function syncPlayer(){$('toggle').textContent=audio.paused?'▶':'Ⅱ';render()}
+ function advance(dir){if(!tracks.length)return;let i;if(shuffle&&dir===1)i=Math.floor(Math.random()*tracks.length);else i=(current+dir+tracks.length)%tracks.length;loadTrack(i,true)}
+ function openPicker(){input.click()}
+ $('heroAdd').onclick=openPicker;$('addBtn').onclick=openPicker;$('addText').onclick=openPicker;$('navAdd').onclick=openPicker;
+ $('navLibrary').onclick=()=>$('trackList').scrollIntoView({behavior:'smooth',block:'start'});
+ input.addEventListener('change',e=>{addFiles(e.target.files);input.value=''});
+ $('search').addEventListener('input',render);
+ $('onlineForm').addEventListener('submit',searchInternet);
+ $('urlForm').addEventListener('submit',addAudioUrl);
+ $('toggle').onclick=()=>{if(current<0){openPicker();return}audio.paused?audio.play().catch(()=>{}):audio.pause();syncPlayer()};
+ $('next').onclick=()=>advance(1);$('prev').onclick=()=>advance(-1);
+ $('playAllBtn').onclick=()=>{if(!tracks.length){openPicker();return}loadTrack(0,true)};
+ $('shuffleBtn').onclick=()=>{shuffle=!shuffle;$('shuffleBtn').style.color=shuffle?'#0077ff':'';if(tracks.length)loadTrack(shuffle?Math.floor(Math.random()*tracks.length):0,true)};
+ audio.addEventListener('play',syncPlayer);audio.addEventListener('pause',syncPlayer);
+ audio.addEventListener('ended',()=>{if(current<tracks.length-1||shuffle)advance(1);else syncPlayer()});
+ audio.addEventListener('timeupdate',()=>{$('progress').style.width=(audio.duration?audio.currentTime/audio.duration*100:0)+'%'});
+ // Media Session provides lock-screen controls where supported by iOS/browser.
+ if('mediaSession' in navigator){
+   navigator.mediaSession.setActionHandler('play',()=>audio.play());
+   navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
+   navigator.mediaSession.setActionHandler('previoustrack',()=>advance(-1));
+   navigator.mediaSession.setActionHandler('nexttrack',()=>advance(1));
+ }
+})();
+</script>
+<script>if("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
+</body>
+</html>
